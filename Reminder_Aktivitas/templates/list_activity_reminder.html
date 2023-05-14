@@ -1,0 +1,498 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Your Routine</title>
+{% endblock meta %}
+
+{% block content %}
+
+<link href='iconBOI.css' rel='stylesheet'/>
+<script src="https://kit.fontawesome.com/98a151f25f.js" crossorigin="anonymous"></script>
+
+<style>
+  h3 {
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #e8f7fc;
+}
+.cardDua {
+  width: 240px;
+  height: 310px;
+  overflow: hidden;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: .5s;
+  justify-content: center;
+  align-content: center;
+  display: flex;
+
+}
+
+.card-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  transition: .5s;
+  overflow: hidden;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.card-image img {
+  display: block;
+  width: 100%;
+}
+.social-icons {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: .5s;
+  display: flex;
+  z-index: 3;
+}
+.social-icons li {
+  list-style-type: none;
+}
+.social-icons li a {
+  position: relative;
+  display: block;
+  width: 240px;
+  height: 350px;
+  line-height: 50px;
+  background: transparent;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 24px;
+  color: rgb(6, 12, 35);
+  margin: 0 5px;
+  transition: .5s;
+  transform: translateY(200px); 
+  opacity: 0;
+  visibility: hidden;
+}
+.detail {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgb(6, 12, 35);
+  width: 100%;
+  height: 190px;
+  z-index: 1;
+  padding: 20px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.detail h2 {
+  margin: 0;
+  color: white;
+  font-size: 24px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+.deskripsi {
+  font-size: 15px;
+  line-height: 17px;
+  color: white;
+  font-weight: 300;
+  padding: 10px;
+  text-align: left;
+}
+.cardDua:hover img {
+  opacity: .1;
+  transition: .5s;
+}
+.cardDua:hover li a {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+.cardDua:hover li:nth-child(1) a {
+  transition-delay: .1s;
+}
+.cardDua:hover li:nth-child(2) a {
+  transition-delay: .2s;
+}
+.cardDua:hover li:nth-child(3) a {
+  transition-delay: .3s;
+}
+.cardDua:hover li:nth-child(4) a {
+  transition-delay: .4s;
+}
+.cardDua:hover .card-image {
+  transform: translateY(-120px);
+  transition: .5s;
+}
+
+/* Tabel Events  */
+
+.styled-table {
+    border-collapse: collapse;
+    margin-left: 50px;
+    font-size: 20px;
+    font-family:"Poppins", sans-serif;
+    width: 30cm;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: rgb(13, 23, 63);
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #f3f3f3;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: rgb(13, 23, 63);
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  $("button").click(function(){
+    $(".card-container").empty();
+    var activities = document.getElementById("date").value;
+    $("#date").val("");
+
+    $.ajax({
+      url: "/your-routine/json",
+      success: function(result) {
+        for(i=0; i<result.length; i++){
+          var data = result[i].fields;
+          if(activities == data.date){
+            $(".card-container" ).append(
+              '<div style="background-color: #060C23; display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">'+
+              '<div class="card" style="height: 380px; width: 350px; background-color: #E8F7FC; margin-top: 30px; margin-bottom: 0cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px;"><div class="card-body">'+
+                '<h3 class="card-title" style="color: black; text-align: center">'+ data.date+'</h3>'+
+                '<hr style="color: black;">'+
+                '<p class="card-text" style="font-size: 20px; color: black;text-align: center; white-space: pre-wrap; text-align: left;">'+ data.aktivitas+'</p>'+
+                '</div></div></div>');
+          }
+        }
+      }
+    });
+  }); 
+});
+</script>
+
+
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="Covid Assistant ">
+        </a> 
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Features</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+            <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li>
+          </ul>         
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<h1 id="top"></h1>
+<div class="main-banner">
+  <div class="card-banner">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h6>COVID ASSISTANT</h6>
+                    <h2>Your Routine</h2>
+                  </div>
+                  <div style="background-color: rgb(6, 12, 35);display: flex; flex-wrap:wrap;justify-content: center; ">
+                    <div class="card" style="height: 500px; width: 100%; background-color: #E8F7FC; margin-bottom: 2cm; border-radius: 0px; border-color: white; justify-content: center;">
+                      <div class = "card-body" style="background-color: rgb(6, 12, 35); border-color: rgb(13, 23, 63);">
+                    <select style="width: 75%; border-radius: 5px; background-color: white; border-left: rgb(13, 23, 63); box-shadow: 5px 5px 10px rgb(0, 0, 0, 9);" class="pilihhari" id="date" name="date">
+                      <option id="placeholder" value="" disable selected hidden>Pilih Tanggal</option>
+                      {% for i in activities %}
+                      <option value="{{i.date}}">{{i.date}}</option>
+                      {% endfor %}
+                    </select>
+                    <button style="color:white; width: fit-content; background:rgb(13, 23, 63); box-shadow: 5px 5px 10px rgb(0, 0, 0, 9); border-radius: 15px; " type="button" class="tampilkan"><i class="fas fa-search"></i></button>
+                    <div class="card-container">
+                      <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+                    <a style="color:white; padding-top: 50px;"> Pilih tanggal untuk menampilkan rutinitas</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  </div>
+                  
+                </div>
+
+                
+
+                <div class="col-lg-12" style="margin-top: 0%;">
+                  <div class="border-first-button scroll-to-section">
+                    <a href="/your-routine/add-activity" style="font-size: 15px;"><i class="fas fa-plus"></i>&nbsp;&nbsp;Tambah Rutinitas</a>
+                    <a  href="#Semuarutinitas" style="font-size: 15px;"><i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Semua Rutinitas</a>
+                    <a  href="#events" style="font-size: 15px;"><i class="far fa-calendar-check"></i>&nbsp;&nbsp;Events</a>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card" style="float: right; height: fit-content; width: fit-content; background-color: rgb(13, 23, 63); margin-bottom: 10px; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px; ">
+              <div class = "card-body">
+                <h1 class="card-title" style="padding-left:5px; padding-top:5px; font-size: 25px; color: white; text-align: right"> <i class="far fa-calendar-alt fa-lg"></i> &nbsp; {% now "l, j F Y" %} </h1>
+              </div>
+             </div>
+              <div class="right-image wow fadeInRight">
+                <img src="{%static 'assets/images/Your Routine.png' %}" alt="">
+                
+              </div>
+              <div class="card" style="float: right; height: fit-content; width: fit-content; background-color: #060C23; margin-bottom: 0px;  border-radius: 18px; ">
+                <div class = "card-body">
+                  <p class="card-text" style="font-size: 20px; color: white;margin-bottom: 0px;">
+                    Aktivitas untuk kamu selama <br> karantina di rumah! <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="border-first-button scroll-to-section" style="justify-content: center; padding-left: 200px; margin-top: 0px;">
+                  <a href="#shoulddo"><i class="fas fa-heart"></i></a>
+                </div></h1>
+               </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="shoulddo">
+  <div class="container-fluid" style="background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 64px; padding-bottom: 30px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown">
+        <h6 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">COVID ASSISTANT</h6>
+        <h4 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">Quarantine Activities</h4>
+        <p style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; color: rgb(13, 23, 63); font-family: 'Poppins';" >Aktivitas yang dapat kamu lakukan selama melakukan karantina di rumah</p>
+      </div>
+    </div>
+  </div>
+  <div style="background-color: #E8F7FC;display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; margin-bottom: 50px;">
+    <div class="card" style="height:max-content; width: max-content; background-color: #060C23; margin-bottom: 0cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px; justify-content: center; margin-left: 10px;">
+      <div class = "card-body">
+  <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; margin-bottom: 30px; margin-top: 30px; margin-left: 30px; margin-right: 30px;">
+  
+  <div class="cardDua">
+    <div class="card-image">
+      <img src="{%static 'assets/images/activities-online.jpg' %}" alt="">
+    </div>
+    <ul class="social-icons">
+      <li>
+        <a href="https://www.insider.com/free-things-online-while-at-home-during-the-coronavirus-outbreak-2020-3#you-can-even-take-it-a-step-further-through-virtual-roller-coaster-rides-5">
+        </a>
+      </li>
+    </ul>
+    <div class="detail">
+      <h2>Online Activities</h2>
+      <span class="deskripsi">Kamu dapat melakukan aktivitas secara online seperti mengobrol ber- sama kerabat, bermain, browsing, dan lainnya.</span>
+    </div>
+  </div>
+  
+  <div class="cardDua">
+    <div class="card-image">
+      <img src="{%static 'assets/images/activities-exercise.jpg' %}" alt="">
+    </div>
+    <ul class="social-icons">
+      <li>
+        <a href="https://www.healthline.com/health/fitness-exercise/at-home-workouts">
+        </a>
+      </li>
+    </ul>
+    <div class="detail">
+      <h2>Exercise</h2>
+      <span class="deskripsi">Berjemur selama 15 menit tiap harinya dan berolahraga di dalam rumah seperti mela- kukan senam, pilates, dan lainnya.</span>
+    </div>
+  </div>
+  
+  <div class="cardDua">
+    <div class="card-image">
+      <img src="{%static 'assets/images/activities-hobby.jpg' %}" alt="">
+    </div>
+    <ul class="social-icons">
+      <li>
+        <a href="https://parade.com/1038103/jessicasager/hobbies-to-pick-up-during-quarantine/">
+        </a>
+      </li>
+    </ul>
+    <div class="detail">
+      <h2>Do Your Hobbies</h2>
+      <span class="deskripsi">Lakukan kegiatan apa- pun yang kamu sukai! Kamu juga bisa men- coba hal-hal baru semaumu. Mengasyikkan bukan?</span>
+    </div>
+  </div>
+
+  
+  <div class="cardDua">
+    <div class="card-image">
+      <img src="{%static 'assets/images/activities-positive.jpg' %}" alt="">
+    </div>
+    <ul class="social-icons">
+      <li>
+        <a href="https://www.calm.com/">
+        </a>
+      </li>
+    </ul>
+    <div class="detail">
+      <h2>Be Positive</h2>
+      <span class="deskripsi">Jangan lupa untuk se- lalu berpikiran positif agar kamu merasa tenang dan bahagia:)</span>
+    </div>
+  </div>
+  </div>
+</div>
+
+<p style="margin-bottom: 20px; font-style: italic; display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; color: #ffffff; font-family: 'Poppins';">(klik gambar untuk mendapatkan informasi lebih banyak)</p>
+</div>
+
+<div class="container-fluid" style="background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 50px; padding-bottom: 0px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <h1 id="events"></h1>
+        <h6 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">COVID ASSISTANT</h6>
+        <h4 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">Events</h4>
+        <p style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; color: rgb(13, 23, 63); font-family: 'Poppins';" >List tanggal-tanggal penting agar kamu tidak terlewat</p>
+        <div class="col-lg-12" style="margin-top: 0%;">
+          <div class="border-first-button scroll-to-section" style="padding-left: 26cm;">
+            <a href="/your-routine/add-event"><i class="far fa-calendar-plus fa-lg"></i>&nbsp;&nbsp;Tambah Event</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; margin-bottom: 50px;">
+    <table class="styled-table">
+      <thead>
+          <tr>
+              <th>Tanggal</th>
+              <th>Event</th>
+              <th>Waktu Mulai</th>
+              <th>Waktu Akhir</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for i in events %}
+          <tr>
+              <td>{{ i.tanggal }}</td>
+              <td>{{ i.event }}</td>
+              <td>{{ i.waktuawal }}</td>
+              <td>{{ i.waktuakhir }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  </div>
+
+<div class="container-fluid" style="background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 10px; padding-bottom: 10px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <h1 id="Semuarutinitas"></h1>
+        <h6 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">COVID ASSISTANT</h6>
+        <h4 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">Semua Rutinitas</h4>
+        <p style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; color: rgb(13, 23, 63); font-family: 'Poppins';" >Daftar jadwal rutinitas harian untuk mengatur aktivitas kamu</p>
+        <div class="col-lg-12" style="margin-top: 0%;">
+          <div class="border-first-button scroll-to-section" style="padding-left: 26cm;">
+            <a href="/your-routine/add-activity"><i class="fas fa-plus"></i>&nbsp;&nbsp;Tambah Rutinitas</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+    {% for i in activities %}
+    <div class="card" style="width: 350px; background-color: rgb(13, 23, 63); margin-bottom: 2cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px;">
+      <div class = "card-body">
+        <h1 class="card-title" style="font-size:30px; color: white; text-align: center;"> {{ i.date }} </h1>
+        <hr style="color: white;">
+        <p class="card-text" style="font-size: 20px; color: white; text-align: left; white-space: pre-wrap;">{{ i.aktivitas }} </p>
+        <hr style="color: white;">
+      </div>
+     </div>
+    {% endfor %}
+  </div>
+
+  <div class="container-fluid" style="background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 10px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <div class="border-first-button scroll-to-section" style="justify-content: center;  margin-top: 0px;">
+          <a href="#top"><i class="fas fa-angle-double-up"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id= "footer" class="footer">
+    <div id= "container-footer" class="container">
+      <div class="row">
+        <div class="footer-col">
+          <h4>COVID ASSISTANT</h4>
+          <ul>
+            <!-- masih belum bisa di klik -->
+            <li style="list-style: none;"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li style="list-style: none;"><a href="{% url 'main:home' %}">Fitur Kami</a></li>
+            <li style="list-style: none;"><a href="{% url 'main:home' %}">Tim Kami</a></li>
+          </ul>
+        </div> 
+        <div class="footer-col">
+          <h4>CONTACT US</h4>
+          <ul>
+            <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+            <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>OUR SOCIAL MEDIA</h4>
+          <ul>
+            <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+            <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+            <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</footer>
+
+{% endblock content %}

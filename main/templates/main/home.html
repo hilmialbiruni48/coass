@@ -1,0 +1,644 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block meta %}
+<title>CoAss - Covid Assistant</title>
+{% endblock meta %}
+
+
+{% block content %}
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+  /* team card */
+.cardDua {
+  width: 240px;
+  height: 310px;
+  overflow: hidden;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: .5s;
+  justify-content: center;
+  align-content: center;
+  display: flex;
+
+}
+
+.card-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  transition: .5s;
+  overflow: hidden;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.card-image img {
+  display: block;
+  width: 100%;
+}
+.social-icons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: .5s;
+  display: flex;
+  z-index: 3;
+}
+.social-icons li {
+  list-style-type: none;
+}
+.social-icons li a {
+  position: relative;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  background: rgb(6, 12, 35);
+  text-align: center;
+  font-size: 24px;
+  color: white;
+  margin: 0 5px;
+  transition: .5s;
+  transform: translateY(200px); 
+  opacity: 0;
+  visibility: hidden;
+}
+.detail {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgb(6, 12, 35);
+  width: 100%;
+  height: 120px;
+  z-index: 1;
+  padding: 20px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.detail h2 {
+  margin: 0;
+  color: white;
+  font-size: 24px;
+}
+.jurusan {
+  font-size: 1rem;
+  line-height: 2.5rem;
+  color: white;
+  font-weight: 300;
+}
+.cardDua:hover img {
+  opacity: .4;
+  transition: .5s;
+}
+.cardDua:hover li a {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+.cardDua:hover li:nth-child(1) a {
+  transition-delay: .1s;
+}
+.cardDua:hover li:nth-child(2) a {
+  transition-delay: .2s;
+}
+.cardDua:hover li:nth-child(3) a {
+  transition-delay: .3s;
+}
+.cardDua:hover li:nth-child(4) a {
+  transition-delay: .4s;
+}
+.cardDua:hover .card-image {
+  transform: translateY(-120px);
+  transition: .5s;
+}
+
+</style>
+
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="Covid Assistant ">
+        </a> 
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="#about">About Us</a></li>
+            <li class="scroll-to-section"><a href="#services">Features</a></li>
+            <li class="scroll-to-section"><a href="#feedback">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            
+            {% if user.is_authenticated %}
+              <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+              <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li> 
+            {% else %}
+              <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/login">Login</a></div></li> 
+            {% endif %}
+          </ul>       
+            
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<div id= "main" class="main-banner">
+  <div class="card-banner">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h6>COVID ASSISTANT</h6>
+                    <h2>Reminder App untuk Pasien Covid</h2>
+                    <p>Covid Assistant akan membantu anda dalam progress penyembuhan dengan track record yang terstruktur. Terdapat beragam fitur yang dapat anda gunakan untuk mempermudah anda dalam memanage aktivitas anda dalam progress penyembuhan covid.</p>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="border-first-button scroll-to-section">
+                      <a href="#services">Mulai Sekarang</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="right-image wow fadeInRight">
+                <img src="{%static 'assets/images/Person with a cold-pana 1.png' %}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- about -->
+<div id="about" class="about section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="about-left-image  wow fadeInLeft" >
+              <img src="{%static 'assets/images/Ilustrasi About us.png' %}" alt="">
+            </div>
+          </div>
+          <div class="col-lg-6 align-self-center  wow fadeInRight">
+            <div class="about-right-content">
+              <div class="section-heading">
+                <h6>ABOUT US</h6>
+                <h4>Apa itu Covid Assistant ?</h4>
+              </div>
+              <p>Covid Assistant (CoAss) yang merupakan aplikasi reminder dan tracking untuk pasien yang terpapar Covid-19. Tujuan dari aplikasi ini sama seperti namanya yaitu asisten untuk para pejuang Covid-19 dan membantu mereka dalam progress penyembuhan.</p>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- services -->
+
+<div id="services" class="services section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-heading  wow fadeInDown" >
+          <h6>FITUR KAMI</h6>
+          <h4>Kami Menawarkan Fitur</h4>
+        </div>
+      </div>
+      <div  id="featured-3" class="container px-4 py-5">
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+          <div id="card-fitur" class="feature col">
+            <div class="icon-fitur">
+              <img height="300px" src="{%static 'assets/images/Your Medicine.png' %}" alt="">
+            </div>
+            <br>
+            <h2>Your Medicine</h2>
+            <br>
+            <p>Your Medicine merupakan salah satu fitur yang ada di website Covid Assistant ini. Fitur ini berfungsi untuk membuat jadwal konsumsi obat tiap harinya.</p>
+            <br>
+            <a href="/your-medicine">
+              <button  style="border-radius: 20px; font-family: 'Poppins';  background-color: #060C23" type="button" class="btn btn-primary btn-lg">Cek Disini</button>
+            </a>
+          </div>
+          <div id="card-fitur" class="feature col">
+            <div class="icon-fitur">
+              <img height="300px" src="{%static 'assets/images/Your Routine.png' %}" alt="">
+            </div>
+            <br>
+            <h2>Your Routine</h2>
+            <br>
+            <p>Fitur untuk mencatat seluruh aktivitas anda setiap harinya. Anda dapat mencatat jadwal dan tanggal event penting sehingga dapat mengatur aktivitas anda secara disiplin.</p>
+              <br>
+              <a href="/your-routine">
+                <button style="border-radius: 20px; font-family: 'Poppins'; background-color: #060C23;" type="button" class="btn btn-primary btn-lg">Cek Disini</button>
+              </a>
+          </div>
+          <div id="card-fitur" class="feature col">
+            <div class="icon-fitur">
+              <img height="300px" src="{%static 'assets/images/Food Schedule.png' %}" alt="">
+            </div>
+            <br>
+            <h2>Food Schedule</h2>
+            <br>
+            <p>Food Schedule merupakan salah fitur yang dimiliki Covid Assistant ini. Fitur ini berfungsi untuk mencatat konsumsi makan dan minum tiap harinya.</p>
+              <br>
+              <a href="/food-schedule">
+                <button style="border-radius: 20px; font-family: 'Poppins'; background-color: #060C23" type="button" class="btn btn-primary btn-lg">Cek Disini</button>
+              </a>
+          </div>
+          <div id="card-fitur" class="feature col">
+            <div class="icon-fitur">
+              <img height="300px" src="{%static 'assets/images/Health Record.png' %}" alt="">
+            </div>
+            <br>
+            <h2>Health Records</h2>
+            <br>
+            <p>Health Records adalah salah satu fitur yang dimiliki oleh Covid Assistant. Dengan adanya fitur ini anda dapat mencatat komponen kesehatan, seperti suhu, tensi, dan saturasi.</p>
+              <br>
+              <a href="/health-records">
+                <button style="border-radius: 20px; font-family: 'Poppins'; background-color: #060C23" type="button" class="btn btn-primary btn-lg">Cek Disini</button>
+              </a>
+          </div>
+          <div id="card-fitur" class="feature col">
+            <div  class="icon-fitur">
+              <img height="300px" src="{%static 'assets/images/Swab Record.png' %}" alt="">
+            </div>
+            <br>
+            <h2>Swab Records</h2>
+            <br>
+            <p>Swab Records adalah fitur yang disediakan oleh Covid Assistant untuk membantu anda melakukan pencatatan terhadap data dari tes swab yang pernah anda lakukan.</p>
+              <br>
+              <a href="/swab-records">
+                <button style="border-radius: 20px; font-family: 'Poppins'; background-color: #060C23" type="button" class="btn btn-primary btn-lg">Cek Disini</button>
+              </a>
+          </div>
+          <div id="card-fitur" class="feature col">
+            <div  class="icon-fitur">
+              <img height="300px" src="{%static 'assets/images/Daily Journal.png' %}" alt="">
+            </div>
+            <br>
+            <h2>Daily Journal</h2>
+            <br>
+            <p>Halaman ini berisi kumpulan jurnal harian yang telah anda masukkan. Anda juga dapat menambahkan jurnal anda melalui halaman ini.</p>
+              <br>
+              <a href="/daily-journal">
+                <button style="border-radius: 20px; font-family: 'Poppins'; background-color: #060C23" type="button" class="btn btn-primary btn-lg">Cek Disini</button>
+              </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ourteam" class="team section">
+<div class="container-fluid" style="background-color: #E8F7FC;">
+  <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 64px; padding-bottom: 70px;">
+    <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+      <h6 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">COVID ASSISTANT</h6>
+      <h4 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">Tim Kami</h4>
+    </div>
+  </div>
+</div>
+
+<div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/radit.jpg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/radityahype/">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/radityahanif/">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Raditya Hanif Yudha P.</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/Karlina.jpg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/karlinaarss/">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://twitter.com/karlina_rana">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/karlina-rana-salsabila-359b17203/">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Karlina Rana Salsabila</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/danela.jpeg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/danelasyafika">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/danela-syafika-desideria-2bb215205/">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Danela Syafika Desideria</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/athif.jpeg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/muhammadathif_/">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/muhammad-athif/">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Muhammad Athif</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/hilmi.jpeg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/hilmi.a.b/">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/hilmi-al-biruni/">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Hilmi Al-biruni</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/Manda.jpg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/aamandaput/">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/amanda-putri-khairunnisa-ab153b205">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Amanda Putri Khairunnisa</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+
+<div class="cardDua">
+  <div class="card-image">
+    <img src="{%static 'assets/images/zidan.jpg' %}" alt="">
+  </div>
+  <ul class="social-icons">
+    <li>
+      <a href="https://www.instagram.com/zidanrajendra/">
+        <i class='bx bxl-instagram'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bxl-twitter'></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/in/zidanrajendra">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class='bx bx-mail-send'></i>
+      </a>
+    </li>
+  </ul>
+  <div class="detail">
+    <h2>Zidan Amukti Rajendra</h2>
+    <span class="jurusan">Sistem Informasi 2020</span>
+  </div>
+</div>
+</div>
+</div>
+
+<div id="feedback" class="feedback section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div style="padding-top: 100px;" class="card-form  wow fadeInDown" >
+          <div id="card-title" class="card-title">
+            <br>
+            <br>
+            <h6 style="text-align: center; font-weight: 700; color: #17c2ec; font-size: 20px;padding-bottom: 8px;">Feedback</h6>
+            <h4 style="text-align: center; font-weight: 700; font-size: 48px;">Tulis Feedback Anda Tentang Kami</h4>
+          </div>
+        </div>
+      </div>
+      
+      <div  id="feedback-content" class="container px-4 py-5">
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+          <div id="card-content" class="feature col">
+            <form method="POST" id="form">
+                <table>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </table>
+                <button id="button-feedback" style="border-radius: 16px; font-family: 'Poppins'; margin-top: 20px; background-color: #060C23;" type="submit" class="btn btn-primary btn-lg">Kirim</button>
+                <a href="/feedback">
+                <button id="button-feedback" style="border-radius: 16px; font-family: 'Poppins'; margin-top: 20px; background-color: #060C23;" type="button" class="btn btn-primary btn-lg">Lihat feedback</button>
+                </a>
+              </form>
+              <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+              <script>
+                const form = document.getElementById('form');
+                form.addEventListener("submit", handleSubmit);
+                function handleSubmit(e) {
+                  e.preventDefault();
+                  $.ajax({
+                    type: 'POST',
+                    url: "",
+                    data: $("#form").serialize(),
+                    dataType: 'json',
+                    success: handleSuccess
+                  })
+                }
+                function handleSuccess(data) {
+                  if (data.msg === 'Success') {
+                    form.reset();
+                    alert('Terima kasih, feedback anda berhasil ditambahkan!');
+                  }
+                }
+              </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<footer id= "footer" class="footer">
+  <div id= "container-footer" class="container">
+    <div class="row">
+      <div class="footer-col">
+        <h4>COVID ASSISTANT</h4>
+        <ul>
+          <!-- masih belum bisa di klik -->
+          <li style="list-style: none;"><a href="#about">About Us</a></li>
+          <li style="list-style: none;"><a href="#services">Fitur Kami</a></li>
+          <li style="list-style: none;"><a href="#ourteam">Tim Kami</a></li>
+        </ul>
+      </div> 
+      <div class="footer-col">
+        <h4>CONTACT US</h4>
+        <ul>
+          <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OUR SOCIAL MEDIA</h4>
+        <ul>
+          <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+ 
+{% endblock content %}

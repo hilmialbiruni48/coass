@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Your Swab Records</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+  .card:hover {
+    transform: scale(1.09);
+  }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  $("button").click(function(){
+    $(".card-container").empty();
+    var swab = document.getElementById("tanggal").value;
+    $("#tanggal").val("");
+
+    $.ajax({
+      url: "/swab-records/json",
+      success: function(result) {
+        for(i=0; i<result.length; i++){
+          var data = result[i].fields;
+          if(swab == data.tanggal){
+            $(".card-container" ).append(
+              '<div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">'+
+              '<div class="card" style="width: 25%; background-color: rgb(13, 23, 63); margin-bottom: 2cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px;"><div class="card-body">'+
+                '<hr style="color: white;">'+
+                '<p class="card-text" style="color: white;text-align: center;">'+'Tanggal : '+ data.tanggal+'</p>'+
+                '<p class="card-text" style="color: white;text-align: center;">'+'Hasil : '+ data.hasil+'</p>'+
+                '<p class="card-text" style="color: white;text-align: center;">'+'CT Value : '+ data.ctValue+'</p>'+
+                '</div></div></div>');
+          }
+        }
+      }
+    });
+  }); 
+});
+</script>
+
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="Covid Assistant ">
+        </a>
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Features</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            
+            <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+            <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li> 
+          </ul>         
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div id= "main" class="main-banner">
+    <div class="card-banner">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-6 align-self-center">
+                <div class="left-content show-up header-text wow fadeInLeft">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h6>COVID ASSISTANT</h6>
+                      <h2>Swab Records</h2>
+                      <p>Swab Records adalah fitur yang disediakan oleh Covid Assistant untuk membantu anda melakukan pencatatan terhadap data dari tes swab yang pernah anda lakukan. Data-data yang disimpan adalah tanggal anda melakukan tes swab, hasil, serta CT Value.</p>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="border-first-button scroll-to-section">
+                        <a href="/swab-records/add">Add</a>
+                        <a href="#record">See Records</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="right-image wow fadeInRight">
+                  <img src="{%static 'assets/images/Swab Record.png' %}" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<h1 id="record"></h1>
+<div class="container-fluid" style=" background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 50px; padding-bottom: 50px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <h6>COVID ASSISTANT</h6>
+        <h4 style="color: rgb(6, 12, 35); display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+          Your Swab Records</h4>
+        <p style="color: rgb(6, 12, 35); font-size: large;">Berikut adalah daftar tes swab Anda yang sudah tercatat: </p>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+    {% for i in swab %}
+    <div class="card" style="width: 25%; background-color: rgb(13, 23, 63); margin-bottom: 2cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px;">
+      <div class = "card-body">
+        <p class="card-text" style="color: white;text-align: center;">Tanggal Swab</p>
+        <h4 class="card-text" style="color: white;text-align: center;">{{ i.tanggal }}</h4>
+        <hr style="color: white;">
+        <p class="card-text" style="color: white;text-align: center;">Hasil</p>
+        <h4 class="card-text" style="color: white;text-align: center;">{{ i.hasil }}</h4>
+        <hr style="color: white;">
+        <p class="card-text" style="color: white;text-align: center;">CT Value</p>
+        <h4 class="card-text" style="color: white;text-align: center;">{{ i.ctValue }}</h4>
+        <hr style="color: white;">
+      </div>
+     </div>
+    {% endfor %}
+  </div>
+  
+
+<footer id= "footer" class="footer">
+  <div id= "container-footer" class="container">
+    <div class="row">
+      <div class="footer-col">
+        <h4>COVID ASSISTANT</h4>
+        <ul>
+          <!-- masih belum bisa di klik -->
+          <li style="list-style: none;"><a href="#about">About Us</a></li>
+          <li style="list-style: none;"><a href="#services">Fitur Kami</a></li>
+        </ul>
+      </div> 
+      <div class="footer-col">
+        <h4>CONTACT US</h4>
+        <ul>
+          <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OUR SOCIAL MEDIA</h4>
+        <ul>
+          <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endblock content %}

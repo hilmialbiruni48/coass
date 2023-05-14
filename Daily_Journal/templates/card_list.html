@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Daily Journal</title>
+<link href="{% static 'css/journal.css' %}" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock meta %}
+
+{% block content %}
+
+<style>
+  .card:hover {
+    transform: scale(1.08);
+  }
+</style>
+
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="covid assistant">
+        </a> 
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Features</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            
+            <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+            <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li> 
+          </ul>         
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="main-banner">
+        <div class="card-banner">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-6 align-self-center">
+                    <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <h2>Daily Journal</h2>
+                          <p>Halaman ini menampilkan rekap dari formulir yang telah anda isi setiap hari</p>
+                          <a href="{% url 'add_journal' %}">
+                              <button type="button" class="btn btn-primary btn-lg btn-block" style="width: 100%; background: linear-gradient(135deg, #9fccff, #060C23);">Tambah Jurnal</button>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="right-image wow fadeInRight">
+                      <img src="{%static 'assets/images/Daily Journal.png' %}" alt="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid" style="background-color: rgb(6, 12, 35);">
+        <h2 style="color:white; font-size: 310%; font-family: 'Poppins'; text-align: center; margin-bottom: 1cm; margin-top: 1cm;">Daftar Jurnal</h2> 
+      </div>
+      <div style="display: flex; flex-wrap:wrap; gap: 12px;justify-content: center;">
+        {% for i in jurnal %}
+        <div class="card" style="width: 20 rem; background-color: rgb(13, 23, 63); margin-bottom: 2cm; box-shadow: 5px 5px 15px">
+          <div class = "card-body">
+            <h5 class="card-title" style="color: white;">Hari ke: {{ i.hari }} </h5>
+            <hr style="color: white;">
+            <p class="card-text"  style="color: white;">Tanggal: {{ i.tanggal }} </p>
+            <hr style="color: white;">
+            <p class="card-text" style="color: white;">Demam: {{ i.is_demam }} </p>
+            <p class="card-text" style="color: white;">Batuk: {{ i.is_batuk }} </p>
+            <p class="card-text" style="color: white;">Kelelahan: {{ i.is_kelelahan }} </p>
+            <p class="card-text" style="color: white;">Kehilangan Penciuman: {{ i.is_penciuman }} </p>
+            <p class="card-text" style="color: white;">Keluhan: {{ i.curhat }} </p>
+          </div>
+         </div>
+        {% endfor %}
+        <footer id= "footer" class="footer">
+          <div id= "container-footer" class="container">
+            <div class="row">
+              <div class="footer-col">
+                <h4>COVID ASSISTANT</h4>
+                <ul>
+                  <!-- masih belum bisa di klik -->
+                  <li style="list-style: none;"><a href="{% url 'main:home' %}">About Us</a></li>
+                  <li style="list-style: none;"><a href="{% url 'main:home' %}">Fitur Kami</a></li>
+                  <li style="list-style: none;"><a href="{% url 'main:home' %}">Tim Kami</a></li>
+                </ul>
+              </div> 
+              <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <ul>
+                  <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+                  <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+                </ul>
+              </div>
+              <div class="footer-col">
+                <h4>OUR SOCIAL MEDIA</h4>
+                <ul>
+                  <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+                  <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+                  <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      </footer>
+    {% endblock content %}
+</html>

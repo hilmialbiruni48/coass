@@ -1,0 +1,12 @@
+.daily-journal {
+  margin-top: 5cm;
+  margin-bottom: 10cm;
+}
+
+td, th {
+  border: 0.88px solid;
+ text-align: justify;
+ padding: 11.8px;
+ border-color: white;
+}
+

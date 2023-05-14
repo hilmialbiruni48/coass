@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Your Swab Records</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .bodySatu{
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      padding: 50px;
+      background: #060C23;
+    }
+
+    .containerSatu{
+      max-width: 300px;
+      width: 80%;
+      background: #E8F7FC;
+      padding: 30px 15px;
+      border-radius: 5px;
+      align-items: center;
+    }
+  
+    .containerSatu .title{
+      display: flex;
+      font-size: 25px;
+      font-weight: 500;
+      position: relative;
+      max-width: 500px;
+      width: 70%;
+      padding-bottom: 20px 0px;
+      padding-top: 70px 0px;
+      border-radius: 5px;
+      padding-left: 20px;
+    }
+    .containerSatu .title::before{
+      display: flex;
+      content: '';
+      position: absolute;
+      left: 20px;
+      bottom: 0;
+      height: 3px;
+      width: 60px;
+    }
+    .containerSatu form .hari{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 10px 0 -10px 0;
+      padding-left: 20px;
+    }
+    form .hari .input-box{
+      margin-bottom: 15px;
+      width: calc(100% / 2 - 20px);
+    }
+    .hari .input-box input details{
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .hari .input-box input{
+      height: 30px;
+      width: 80%;
+      outline: none;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding-left: 15px;
+      font-size: 16px;
+      border-bottom-width: 2px;
+      transition: all 0,3s ease;
+    }
+    .hari .input-box input:focus,
+    .hari .input-box input:valid{
+      border-color:#060C23
+    }
+    .containerSatu form .user-details{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 20px 0 12px 0;
+      padding-left: 20px;
+    }
+    form .user-details .input-box{
+      margin-bottom: 15px;
+      width: calc(100% / 2 - 20px);
+    }
+    .user-details .input-box input details{
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .user-details .input-box input{
+      height: 30px;
+      width: 80%;
+      outline: none;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding-left: 15px;
+      font-size: 16px;
+      border-bottom-width: 2px;
+      transition: all 0,3s ease;
+    }
+    .user-details .input-box input:focus,
+    .user-details .input-box input:valid{
+      border-color:#060C23
+    }
+    form .button{
+      height: 45px;
+      margin: 10px 0;
+      padding-left: 15px;
+    }
+    form .button input{
+      height: 70%;
+      width: 90%;
+      outline: none;
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      font-weight: 500;
+      border-radius: 5px;
+      letter-spacing: 1px;
+      background-color: #17C2EC
+    }
+    @media only screen and(max-width: 912px){
+      .bodySatu{
+        max-width: 80px 30px;
+      }
+      .containerSatu{
+        max-width: 80px 30px;
+      }
+      form .user-details .input-box{
+        margin-bottom: 15px;
+        width: 100%;
+      }
+      form .button .input-box{
+        margin-bottom: 15px;
+        width: 100%;
+      }
+      .containerSatu form .user-details{
+        max-width: 300px;
+        overflow-y: scroll;
+      }
+      .user-details::-webkit-scrollbar{
+        width: 0;
+      }
+    }
+  </style>
+
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="Covid Assistant ">
+        </a>
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Features</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+            <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li>
+          </ul>         
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid" style=" background-color: rgb(6, 12, 35); padding-top: 100px;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; ">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <h6>COVID ASSISTANT</h6>
+        <h4 style="color: white; display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+          Add Swab Records</h4>
+        <p style="color: white;">Tambahkan riwayat tes swab Anda pada form di bawah ini.</p>
+      </div>
+    </div>
+  </div>
+<div class="bodySatu">
+  <div class="container-fluid" style="background-color: rgb(6, 12, 35); padding-left: 5px;">
+      <img src="{%static 'assets/images/Swab Record.png' %}"  alt="">
+    </div>
+  <div class="containerSatu" style="max-width:60%">
+      <div class="title">Add Swab Record</div>
+      <p style="color: #060C23; padding-left: 20px;">Isi form berikut dengan data tes swab Anda!</p>
+  <form action = "" method = "POST" id="form">
+      {% csrf_token %}
+      
+      <div class="user-details">
+        <div class="input-box">
+          <span class="details" for="tanggal">Tanggal :</span><br>
+          <input type="date" id="tanggal" name="tanggal"><br>
+        </div>
+        <div class="input-box">
+          <span class="details" for="hasil">Hasil :</span><br>
+          <input type="text" id="hasil" name="hasil"><br>
+        </div>
+        <div class="input-box">
+          <span class="details" for="ctValue">CT Value :</span><br>
+          <input type="text" id="ctValue" name="ctValue"><br>
+        </div>
+        
+      </div>
+      <div class="button"><br>
+        <input type="submit" value="Tambahkan">
+      </div>
+      <a href="/swab-records">
+      <div class="button"><br>
+        <input type="button" value="Lihat Riwayat Swab">
+      </div>
+      </a>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+    const form = document.getElementById('form');
+    form.addEventListener("submit", handleSubmit);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        $.ajax({
+        type: 'POST',
+        url: "{% url 'add_SWABrecords' %}",
+        data: $("#form").serialize(),
+        dataType: 'json',
+        success: handleSuccess
+        })
+    }
+    function handleSuccess(data) {
+        if (data.msg === 'Success') {
+          form.reset();
+          alert('Riwayat swab Anda berhasil ditambahkan!');
+        }
+    }
+    </script>
+</div>
+</div>
+
+<footer id= "footer" class="footer">
+  <div id= "container-footer" class="container">
+    <div class="row">
+      <div class="footer-col">
+        <h4>COVID ASSISTANT</h4>
+        <ul>
+          <!-- masih belum bisa di klik -->
+          <li style="list-style: none;"><a href="#about">About Us</a></li>
+          <li style="list-style: none;"><a href="#services">Fitur Kami</a></li>
+        </ul>
+      </div> 
+      <div class="footer-col">
+        <h4>CONTACT US</h4>
+        <ul>
+          <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OUR SOCIAL MEDIA</h4>
+        <ul>
+          <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+          <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% endblock content %}

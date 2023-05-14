@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block meta %}
+<title>Tambah Jurnal</title>
+<link href="{% static 'css/journal.css' %}" rel="stylesheet">
+{% endblock meta %}
+
+{% block content %}
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="covid assistant">
+        </a> 
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Features</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+            <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li>
+          </ul>         
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="main-banner">
+        <div class="card-banner">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-6 align-self-center">
+                    <div class="left-content show-up header-text wow fadeInLeft">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <h2>Daily Journal</h2>
+                          <p>Ceritakan apa yang kamu rasakan hari ini!</p>
+                          <div class="tengah" style="color: white;">
+                            <form method="post" id="form">
+                                {% csrf_token %}
+                                <div class="input-box">
+                                  <span class="details" for="hari" style="color:white; font-size: 200%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Hari ke- :</span><br>
+                                  <input type="text" id="hari" name="hari" style="width: 50%;" maxlength="2"><br>
+                                </div>
+                                <div class="input-box">
+                                  <span class="details" for="tanggal" style="color:white; font-size: 200%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Tanggal :</span><br>
+                                  <input type="date" id="tanggal" name="tanggal" style="width: 50%;"><br>
+                                </div>
+                                <br>
+                                <h3 style="color:white; font-size: 200%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 2cm;">Daily Checklist: </h3>
+                                <hr style="color: white;">
+                                <div class="input-box">
+                                  <input type="checkbox" id="is_demam" name="is_demam" style="width: 0.5cm; height: 0.5cm; margin-right: 2%;">
+                                  <span class="details" for="is_demam" style="color:white; font-size: 100%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Demam</span>
+                                </div>
+                                <div class="input-box">
+                                  <input type="checkbox" id="is_batuk" name="is_batuk" style="width: 0.5cm; height: 0.5cm; margin-right: 2%;">
+                                  <span class="details" for="is_batuk" style="color:white; font-size: 100%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Batuk</span>
+                                </div>
+                                <div class="input-box">
+                                  <input type="checkbox" id="is_kelelahan" name="is_kelelahan" style="width: 0.5cm; height: 0.5cm; margin-right: 2%;">
+                                  <span class="details" for="is_kelelahan" style="color:white; font-size: 100%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Kelelahan</span>
+                                </div>
+                                <div class="input-box">
+                                  <input type="checkbox" id="is_penciuman" name="is_penciuman" style="width: 0.5cm; height: 0.5cm; margin-right: 2%;">
+                                  <span class="details" for="is_penciuman" style="color:white; font-size: 100%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Kehilangan Penciuman</span>
+                                </div>
+                                <hr style="color: white; margin-bottom: 2cm;">
+                                <div class="input-box">
+                                  <span class="details" for="curhat" style="color:white; font-size: 200%; font-family: 'Poppins'; margin-bottom: 1%; margin-top: 1%;">Keluhan lainnya:</span><br>
+                                  <input type="text" id="curhat" name="curhat" style="width: 100%; height: 3cm;"><br>
+                                </div>
+                                <div class="button"><br>
+                                  <input type="submit" value="Tambahkan Jurnal" style="font-family: 'Poppins'; margin-top: 5%; margin-top: 1%; background: linear-gradient(135deg, #9fccff, #060C23);" class="btn btn-primary btn-lg btn-block; btn btn-outline-danger; btn btn-primary">
+                                  <a href="{% url 'journal_page' %}">
+                                    <input type="button" value="Daftar Jurnal" style="font-family: 'Poppins'; margin-top: 5%; margin-top: 1%;" class="btn btn-secondary btn-lg btn-block; btn btn-outline-danger; btn btn-primary">
+                                  </a>
+                                </div>
+                            </form>
+                          </div>
+                          <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+                          <script>
+                            const form = document.getElementById('form');
+                            form.addEventListener("submit", handleSubmit);
+
+                            function handleSubmit(e) {
+                              e.preventDefault();
+                              $.ajax({
+                                type: 'POST',
+                                url: "{% url 'add_journal' %}",
+                                data: $("#form").serialize(),
+                                dataType: 'json',
+                                success: handleSuccess
+                              })
+                            }
+                            function handleSuccess(data) {
+                              if (data.msg === 'Success') {
+                                form.reset();
+                                alert('Jurnal anda berhasil ditambahkan!');
+                              }
+                            }
+                          </script>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="right-image wow fadeInRight">
+                      <img src="{%static 'assets/images/Daily Journal.png' %}" alt="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer id= "footer" class="footer">
+        <div id= "container-footer" class="container">
+          <div class="row">
+            <div class="footer-col">
+              <h4>COVID ASSISTANT</h4>
+              <ul>
+                <!-- masih belum bisa di klik -->
+                <li style="list-style: none;"><a href="{% url 'main:home' %}">About Us</a></li>
+                <li style="list-style: none;"><a href="{% url 'main:home' %}">Fitur Kami</a></li>
+                <li style="list-style: none;"><a href="{% url 'main:home' %}">Tim Kami</a></li>
+              </ul>
+            </div> 
+            <div class="footer-col">
+              <h4>CONTACT US</h4>
+              <ul>
+                <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+                <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>OUR SOCIAL MEDIA</h4>
+              <ul>
+                <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+                <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+                <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </footer>
+    {% endblock content %}
+</html>

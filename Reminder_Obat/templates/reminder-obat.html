@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Reminder Obat</title>
+<style>
+  .card {
+    transition: 0.5 ease;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: scale(1.2);
+  }
+  h6,h5,h4,h3,h2,h1 {
+    cursor: pointer;
+  }
+  h6,h1:hover::after {
+    text-shadow: 0 0 10px white;
+  }
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $("button").click(function(){
+      $(".card-container").empty();
+      var medicine = document.getElementById("hari").value;
+      $("#hari").val("");
+  
+      $.ajax({
+        url: "/your-medicine/json",
+        success: function(result) {
+          for(i=0; i<result.length; i++){
+            var data = result[i].fields;
+            if(medicine == data.hari){
+              $(".card-container" ).append(
+                '<div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">'+
+                '<div class="card" style="width: 25%; background-color: rgb(13, 23, 63); margin-bottom: 2cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px;"><div class="card-body">'+
+                  '<h3 class="card-title" style="color: white; text-align: center">'+'Tanggal '+ data.hari+'</h3>'+
+                  '<hr style="color: white;">'+
+                  '<p class="card-text" style="color: white;text-align: center;">'+'Obat : '+ data.obat+'</p>'+
+                  '<p class="card-text" style="color: white;text-align: center;">'+'Jam : '+ data.due_time+'</p>'+
+                  '</div></div></div>');
+            }
+          }
+        }
+      });
+    }); 
+  });
+  </script>
+{% endblock meta %}
+
+{% block content %}
+
+<header class="header-area header-sticky wow slideInDown">
+  <div class="container">
+    <div class="row">
+      <nav class="main-nav"> -->
+        <!-- ***** Logo Start ***** -->
+        <a href="{% url 'main:home' %}" class="logo">
+          <img src="{%static 'assets/images/logo.png' %}" alt="covid assistant">
+        </a> 
+        <!-- ***** Logo End ***** -->
+
+        <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Home</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Features</a></li>
+            <li class="scroll-to-section"><a href="{% url 'main:home' %}">Feedback</a></li>
+            <li class="scroll-to-section"><a href="#footer">Contact Us</a></li>
+            
+            <li style="color: #fff; padding-top: 8px;"><i class="fa fa-sign-out" aria-hidden="true"></i> Hi, {{ user.get_username }}</li>
+            <li class="scroll-to-section"><div class="border-first-button"><a href="/authentication/log-out">Logout</a></div></li> 
+          </ul>         
+        <!-- ***** Menu End ***** -->
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="main-banner">
+	<div class="card-banner">
+	  <div class="container">
+		<div class="row">
+		  <div class="col-lg-12">
+			<div class="row">
+			  <div class="col-lg-6 align-self-center">
+				<div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+				  <div class="row">
+					<div class="col-lg-12">
+					  <h6>COVID ASSISTANT</h6>
+					  <h2>Your Medicine</h2>
+                      <p>Your Medicine merupakan salah satu fitur yang ada di website Covid Assistant ini. Fitur ini berfungsi untuk membuat jadwal konsumsi obat tiap harinya.</p>
+					</div>
+                    <div class="col-lg-12"> 
+                        <div style="padding-bottom: 10px; margin-bottom: 10px;" class="border-first-button scroll-to-section">
+                          <a style="padding-bottom: 10px;" href="#ringkasan"> Summary</a>
+                          <a style="padding-bottom: 10px;" href="/your-medicine/add-medicine"> Add </a>
+                        </div>
+                      </div>
+				  </div>
+				</div>
+			  </div>
+			  <div class="col-lg-5">
+				<div class="right-image wow fadeInRight">
+				  <img src="{%static 'assets/images/Your Medicine2.png' %}" alt="">
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+  	  </div>
+   </div>
+ </div>
+
+
+<h1 id="ringkasan"></h1>
+  <div class="container-fluid" style="background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 100px; padding-bottom: 70px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <h6 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">COVID ASSISTANT</h6>
+        <h4 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;"> Your Medicines Summary</h4>
+        <p style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; color: rgb(13, 23, 63); font-family: 'Poppins';" >Pilih tanggal untuk melihat summary anda</p>
+        <select style="width: 40%; border-radius: 5px; background-color: white; border-left: rgb(13, 23, 63); box-shadow: 5px 5px 10px rgb(0, 0, 0, 9);" class="pilihhari" id="hari" name="hari">
+          <option id="placeholder" value="" disable selected hidden>Pilih Tanggal</option>
+          {% for i in medicine %}
+          <option value="{{i.hari}}">Tanggal {{i.hari}}</option>
+          {% endfor %}
+        </select>
+        <button style="color:white; width: 20%; background:rgb(13, 23, 63); box-shadow: 5px 5px 10px rgb(0, 0, 0, 9); border-radius: 15px; " type="button" class="tampilkan">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-container">
+    <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+  <a style="color:rgb(13, 23, 63); padding-bottom: 50px;" href="#Semuaringkasan"> All Summary</a>
+    </div>
+  </div>
+
+  <h1 id="Semuaringkasan"></h1>
+<div class="container-fluid" style="background-color: #E8F7FC;">
+    <div class="col-lg-12" style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center; padding-top: 100px; padding-bottom: 70px;">
+      <div style="font-family: 'Poppins'; text-align: center;" class="section-heading  wow fadeInDown" >
+        <h6 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">COVID ASSISTANT</h6>
+        <h4 style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;"> All Your Medicines Summary</h4>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap:wrap; gap: 50px;justify-content: center;">
+    {% for i in medicine %}
+    <div class="card" style="width: 25%; background-color: rgb(13, 23, 63); margin-bottom: 2cm; box-shadow: 5px 5px 15px rgb(0, 0, 0, 9); border-radius: 18px;">
+      <div class = "card-body">
+        <h1 class="card-title" style="color: white; text-align: center"> {{ i.obat }} </h1>
+        <hr style="color: white;">
+        <h4 class="card-text" style="color: white;text-align: center;">{{ i.hari }}</h4>
+        <hr style="color: white;">
+        <h4 class="card-text" style="color: white;text-align: center;">{{ i.due_time }}</h4>
+        <hr style="color: white;">
+        <p class="card-text" style="color: white;text-align: center;">ditambahkan pada {{ i.time_now }}</p>
+        <hr style="color: white;">
+        <div class="col-lg-12"> 
+          <div style="padding-bottom: 10px; margin-bottom: 10px;" class="border-first-button scroll-to-section-center" align="center">
+                      <a style="padding-bottom: 10px;" href="{% url 'Reminder_Obat:delete' i.id %}"> Delete </a>
+          </div>
+          </div>
+      </div>
+     </div>
+    {% endfor %}
+  </div>
+
+  <footer id= "footer" class="footer">
+    <div id= "container-footer" class="container">
+      <div class="row">
+        <div class="footer-col">
+          <h4>COVID ASSISTANT</h4>
+          <ul>
+            <!-- masih belum bisa di klik -->
+            <li style="list-style: none;"><a href="{% url 'main:home' %}">About Us</a></li>
+            <li style="list-style: none;"><a href="{% url 'main:home' %}">Fitur Kami</a></li>
+            <li style="list-style: none;"><a href="{% url 'main:home' %}">Tim Kami</a></li>
+          </ul>
+        </div> 
+        <div class="footer-col">
+          <h4>CONTACT US</h4>
+          <ul>
+            <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-envelope"></i> covid.assistant@coass.com</a></li>
+            <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-phone"></i> 021-9272-8161</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>OUR SOCIAL MEDIA</h4>
+          <ul>
+            <li style="list-style: none;"><a style="color: #bbbbbb;"><i id class="fa fa-facebook"></i> Covid Assistant</a></li>
+            <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-instagram"></i> @covid_assistant</a></li>
+            <li style="list-style: none;"><a style="color: #bbbbbb;" ><i class="fa fa-twitter"></i> @covid_assistant</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</footer>
+
+{% endblock content %}
