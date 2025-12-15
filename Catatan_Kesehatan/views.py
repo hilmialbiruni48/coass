@@ -33,7 +33,7 @@ def json(request):
 @login_required(login_url='Authentication:login')
 def add_health_record(request):
     form = healthRecordForm()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = healthRecordForm(request.POST)
         if form.is_valid():
             pick_user = request.user

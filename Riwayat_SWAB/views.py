@@ -18,7 +18,7 @@ def json(request):
 @login_required(login_url='Authentication:login')
 def add_SWABRecords(request):
     form = SwabRecordsForm()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = SwabRecordsForm(request.POST)
         if form.is_valid():
             pick_user = request.user

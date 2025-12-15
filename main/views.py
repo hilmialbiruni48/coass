@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     form = FormFeedback()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = FormFeedback(request.POST)
         if form.is_valid():
             form.save()

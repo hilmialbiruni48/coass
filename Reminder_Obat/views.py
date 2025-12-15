@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 @login_required(login_url='Authentication:login')
 def add_medicine(request):
     form = MedicineForm()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = MedicineForm(request.POST)
         if form.is_valid():
             pick_user = request.user

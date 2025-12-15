@@ -31,7 +31,7 @@ def json(request):
 @login_required(login_url='Authentication:login')
 def add_makan_minum(request):
     form = makanMinumForm()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = makanMinumForm(request.POST)
         if form.is_valid():
             # form.save()

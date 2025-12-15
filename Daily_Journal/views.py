@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 @login_required(login_url='Authentication:login')
 def journal_page(request):
     form = JournalForm()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = JournalForm(request.POST)
         if form.is_valid():
             pick_user = request.user

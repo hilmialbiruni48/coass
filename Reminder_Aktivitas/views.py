@@ -30,7 +30,7 @@ def json(request):
 @login_required(login_url='Authentication:login')
 def add_activity(request):
     form = ActivityForm()
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = ActivityForm(request.POST)
         if form.is_valid():
             pick_user = request.user
